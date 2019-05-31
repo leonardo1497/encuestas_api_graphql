@@ -56,9 +56,21 @@ const getEncuestas = () => {
     })
 }
 
+const getEncuesta = (id) =>{
+    return new Promise((resolve,reject)=>{
+        knex.select(id).from('encuesta').then((response)=>{
+            resolve(response)
+        })
+        .catch((err) => { 
+            console.log( err); throw err 
+        })
+    })
+}
+
 module.exports = {
     getEncuestas: getEncuestas,
     addEncuesta: addEncuesta,
     deleteEncuesta: deleteEncuesta,
-    updateEncuesta: updateEncuesta
+    updateEncuesta: updateEncuesta,
+    getEncuesta : getEncuesta
 }

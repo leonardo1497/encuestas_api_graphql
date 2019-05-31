@@ -4,7 +4,7 @@ const app = express();
 
 var graphqlHTTP = require("express-graphql");
 var {buildSchema} = require("graphql");
-var {getEncuestas, addEncuesta,deleteEncuesta,updateEncuesta} = require("./data/encuestas");
+var {getEncuestas, addEncuesta,deleteEncuesta,updateEncuesta,getEncuesta} = require("./data/encuestas");
 
 
 var cors = require("cors");
@@ -25,7 +25,8 @@ var schema = buildSchema(`
     type Mutation {
         createEncuesta(nombre:String!, descripcion: String!, preguntas: String!, estado: Int!,fecha: String!): Encuesta,
         deleteEncuesta(id: Int!): Encuesta,
-        updateEncuesta(id: Int!, nombre:String!, descripcion: String!, preguntas: String!, estado: Int!,fecha: String!): Encuesta
+        updateEncuesta(id: Int!, nombre:String!, descripcion: String!, preguntas: String!, estado: Int!,fecha: String!): Encuesta,
+        getEncuesta(id: Int!): Encuesta
     }
 `);
 
@@ -37,8 +38,8 @@ var root = {
         return getEncuestas();
     },
     encuesta:({id}) => {
-        const encuestas = getEncuestas();
-        return encuestas.find(p => p.id === id);
+
+        return getEncuesta(id);
     },
     createEncuesta: (args) => {
         const {nombre,descripcion,preguntas,estado,fecha} = args;
@@ -47,9 +48,9 @@ var root = {
     deleteEncuesta:({id})=>{
         return deleteEncuesta(id);
     },
-    updateProduct: args => {
+    updateEncuesta: args => {
         const {id,nombre,descripcion,preguntas,estado,fecha} = args;
-        return updateProduct(id,nombre,descripcion,preguntas,estado,fecha);
+        return updateEncuesta(id,nombre,descripcion,preguntas,estado,fecha);
     }
 };
 
